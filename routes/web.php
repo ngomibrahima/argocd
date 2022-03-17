@@ -25,30 +25,42 @@ Route::group(['middleware' => 'auth'], function () {
     //Accueil
     Route::get('accueil', [\App\Http\Controllers\AuthController::class, 'starter'])->name('auth.starter');
 
-    /**
-     * Nature
-     */
-    Route::get('natures', [\App\Http\Controllers\NatureController::class, 'index'])->name('natures.index');
-    Route::post('natures/store', [\App\Http\Controllers\NatureController::class, 'store'])->name('natures.store');
-    Route::post('natures/{slug}/update', [\App\Http\Controllers\NatureController::class, 'update'])->name('natures.update');
-    Route::get('natures/{slug}/destroy', [\App\Http\Controllers\NatureController::class, 'destroy'])->name('natures.destroy');
+    Route::group(['middleware' => 'isAdmin'], function () {
+        /**
+         * Nature
+         */
+        Route::get('natures', [\App\Http\Controllers\NatureController::class, 'index'])->name('natures.index');
+        Route::post('natures/store', [\App\Http\Controllers\NatureController::class, 'store'])->name('natures.store');
+        Route::post('natures/{slug}/update', [\App\Http\Controllers\NatureController::class, 'update'])->name('natures.update');
+        Route::get('natures/{slug}/destroy', [\App\Http\Controllers\NatureController::class, 'destroy'])->name('natures.destroy');
+
+        /**
+         * Cadeau
+         */
+        Route::get('declarations', [\App\Http\Controllers\CadeauController::class, 'index'])->name('cadeau.index');
+        Route::post('declaration/{id}/reponse-admin', [\App\Http\Controllers\CadeauController::class, 'update'])->name('cadeau.update');
+    });
+
+    Route::group(['middleware' => 'isSuperAdmin'], function () {
+        /**
+         * Gestion utilisateur
+         */
+        Route::get('utilisateurs', [\App\Http\Controllers\AuthController::class, 'usersList'])->name('auth.users-list');
+        Route::post('utilisateurs', [\App\Http\Controllers\AuthController::class, 'createUser'])->name('auth.create-user');
+        Route::get('utilisateurs/{id}/supprimer', [\App\Http\Controllers\AuthController::class, 'deleteUser'])->name('auth.delete-user');
+    });
+
 
 
     /**
      * Cadeau
      */
-    Route::get('declarations', [\App\Http\Controllers\CadeauController::class, 'index'])->name('cadeau.index');
+
     Route::post('declarations', [\App\Http\Controllers\CadeauController::class, 'store'])->name('cadeau.store');
     Route::get('declaration/{id}', [\App\Http\Controllers\CadeauController::class, 'show'])->name('cadeau.show');
-    Route::post('declaration/{id}/reponse-admin', [\App\Http\Controllers\CadeauController::class, 'update'])->name('cadeau.update');
     Route::get('mes-declarations', [\App\Http\Controllers\CadeauController::class, 'mesDeclarations'])->name('cadeau.mesDeclarations');
 
-    /**
-     * Gestion utilisateur
-     */
-    Route::get('utilisateurs', [\App\Http\Controllers\AuthController::class, 'usersList'])->name('auth.users-list');
-    Route::post('utilisateurs', [\App\Http\Controllers\AuthController::class, 'createUser'])->name('auth.create-user');
-    Route::get('utilisateurs/{id}/supprimer', [\App\Http\Controllers\AuthController::class, 'deleteUser'])->name('auth.delete-user');
+
 
     Route::get('logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('auth.logout');
 
