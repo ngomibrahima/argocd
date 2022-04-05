@@ -50,7 +50,7 @@
                     <div class="col-md-10 col-lg-10 col-xl-10">
                         <div class="card overflow-hidden">
                             <div class="text-center mt-2">
-                                <h3 style="color: #9c182f">Déclaration de cadeaux ou d'invitations</h3>
+                                <h3 style="color: #9c182f">Déclaration des invitations et cadeaux</h3>
                                 <p class="text-muted">Veuillez remplir les champs</p>
                             </div>
 
@@ -242,7 +242,7 @@
                         </div>
                         <div class="mt-5 text-center">
 
-                            <p>© 2022 Declaration Cadeaux et invitations V0 - SETER Crafted with <i class="mdi mdi-heart text-danger"></i> by DSI</p>
+                            <p>© 2022 Declaration des invitations et cadeaux V0 - SETER Crafted with <i class="mdi mdi-heart text-danger"></i> by DSI</p>
                         </div>
 
                     </div>

@@ -156,31 +156,34 @@ class CadeauController extends Controller
     public function show($id)
     {
         $declaration = Cadeau::findOrFail($id);
-        try {
-            $client  = new Client();
-            $url = "http://5.189.156.127:8015/apirest.php/User/".$declaration->sup_hierarchique;
+        $supHierarchique = "";
+        if ($declaration->sup_hierarchique != null && $declaration->sup_hierarchique != 0){
+            try {
+                $client  = new Client();
+                $url = "http://5.189.156.127:8015/apirest.php/User/".$declaration->sup_hierarchique;
 
-            $params = [
-                "app_token" => "LoOZbYrfBt5dqi7eBZyPMjCLO3ye1i4zZEQGhSDe",
-                "session_token" => Session::get('session_token'),
-            ];
+                $params = [
+                    "app_token" => "LoOZbYrfBt5dqi7eBZyPMjCLO3ye1i4zZEQGhSDe",
+                    "session_token" => Session::get('session_token'),
+                ];
 
-            $headers = [
-                "Content-Type" => "application/json",
+                $headers = [
+                    "Content-Type" => "application/json",
 
-            ];
-            $response = $client->request("GET", $url, [
-                'query' => $params,
-                'headers' => $headers,
-                'verify' => false,
-            ]);
+                ];
+                $response = $client->request("GET", $url, [
+                    'query' => $params,
+                    'headers' => $headers,
+                    'verify' => false,
+                ]);
 
-            $userGlpi = json_decode($response->getBody());
-            $supHierarchique = $userGlpi->realname.' '.$userGlpi->firstname;
+                $userGlpi = json_decode($response->getBody());
+                $supHierarchique = $userGlpi->realname.' '.$userGlpi->firstname;
 
-        }catch (\Exception $exception){
-            $message = "Error Code 100-04";
-            return view('page-erreur', compact('message'));
+            }catch (\Exception $exception){
+                $message = "Error Code 100-04";
+                return view('page-erreur', compact('message'));
+            }
         }
 
         $adminApprouv = "";
