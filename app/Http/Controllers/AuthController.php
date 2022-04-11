@@ -125,11 +125,12 @@ class AuthController extends Controller
             //return $user;
 
             Session::push('userTryngToConnect', $user);
-            //Cache::put('token', $token, now()->addMinutes(5));
             Session::put('token', $token);
 
-            //Mail::to($request->email)->send(new SendToken($token));
+            Mail::to($request->email)->send(new SendToken($token));
+            return redirect()->route('auth.verify-token-form');
 
+            /*
             try {
                 Mail::to($request->email)->send(new SendToken($token));
                 return redirect()->route('auth.verify-token-form');
@@ -137,6 +138,7 @@ class AuthController extends Controller
                 $message = "Error Code 100-03";
                 return view('page-erreur', compact('message'));
             }
+            */
 
 
 
