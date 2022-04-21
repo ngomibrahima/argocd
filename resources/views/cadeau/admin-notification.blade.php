@@ -40,13 +40,17 @@
                         <li>Nature: <span class="text-primary font-weight-semibold"><b>{{$cadeau->nature->nom}}</b></span></li>
                         <li>Sens: <span class="text-primary font-weight-semibold"><b>{{$cadeau->sens}}</b></span></li>
                         <li>Contexte: <span class="text-primary font-weight-semibold"><b>{{$cadeau->contexte}}</b></span></li>
-                        <li>Montant: <span class="text-primary font-weight-semibold"><b>{{$cadeau->montant}} FCFA</b></span></li>
+                        <li>Montant Estimatif: <span class="text-primary font-weight-semibold"><b>{{$cadeau->montant}} FCFA</b></span></li>
+                        <li>Responsable Hierarchique: <span class="text-primary font-weight-semibold"><b>{{$cadeau->sup_hierarchique}}</b></span></li>
                         <li>Description: <span class="text-primary font-weight-semibold">{!! $cadeau->description !!}</span></li>
 
                     </ul>
 
+                    <br>
+                    <br>
+
                     @if(count($cadeau->implications) != 0)
-                        <h4>Implications</h4>
+                        <h4>Provenance</h4>
                         @foreach($cadeau->implications as $value)
                             <ul class="list-unstyled plan-features mt-3">
                                 <li>Structure: <span class="text-primary font-weight-semibold"><b>{{$value->structure}}</b></span></li>

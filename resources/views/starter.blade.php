@@ -137,7 +137,7 @@
 
                                                 <div class="row">
                                                     <div class="form-group col-md-6">
-                                                        <label for="montant">Montant (FCFA) *</label>
+                                                        <label for="montant">Montant Estimatif (FCFA) *</label>
                                                         <input type="text" class="form-control @error('declaration.*.montant') is-invalid @enderror" id="montant" name="montant" >
                                                         @error('declaration.*.montant')
                                                         <span class="invalid-feedback" role="alert">
@@ -175,11 +175,11 @@
 
                                                 <div class="inner-repeater m-2 p-2">
                                                     <div data-repeater-list="implications" class="inner form-group">
-                                                        <h4>Implications :</h4>
+                                                        <h4>Provenance :</h4>
                                                         <div data-repeater-item class="inner m-3 p-2 ">
                                                             <div class="row">
                                                                 <div class="form-group">
-                                                                    <label for="structure">Structure :</label>
+                                                                    <label for="structure">Structure de Provenance :</label>
                                                                     <input class="form-control @error('declaration.*.implications.*.structure') is-invalid @enderror" type="text" id="structure" name="structure" value="{{old('structure')}}">
                                                                     @error('declaration.*.implications.*.structure')
                                                                     <span class="invalid-feedback" role="alert">

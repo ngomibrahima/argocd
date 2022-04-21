@@ -94,7 +94,7 @@
                                         <div class="col-4">
                                             <div class="mt-3">
                                                 <p class="text-muted mb-2"> Superieur Hierarchique</p>
-                                                <h5 class="font-size-16 mb-0">{{ $supHierarchique }}</h5>
+                                                <h5 class="font-size-16 mb-0">{{ $declaration->sup_hierarchique }}</h5>
                                             </div>
                                         </div>
 
@@ -172,17 +172,18 @@
                                                             </div>
                                                             <div class="modal-body">
 
-                                                                @if(count($decYear) != 0)
-                                                                    <h4>Déclarations antérieures de l'agent</h4>
-                                                                    <ul>
-                                                                        @foreach($decYear as $item)
-                                                                            <li>Numero Reservation: {{$item->id}} -- Date: {{$item->date}} -- Montant: {{$item->montant}}</li>
-                                                                        @endforeach
-                                                                    </ul>
-                                                                    <h4>Total: {{$montant}}</h4>
-                                                                    <h4 class="text-danger">Seuil: {{$declaration->nature->seuil}}</h4>
-
-
+                                                                <h4>Déclarations antérieures de l'agent</h4>
+                                                                <ul>
+                                                                    @foreach($decYear as $item)
+                                                                        <li>Numero Reservation: {{$item->id}} -- Date: {{$item->date}} -- Montant: {{$item->montant}} FCFA</li>
+                                                                    @endforeach
+                                                                </ul>
+                                                                <h4>Total: {{$montant}} FCFA</h4>
+                                                                <br>
+                                                                @if($declaration->nature->seuil - $montant - $declaration->montant < 0)
+                                                                    <h4 class="text-danger">Seuil: {{$declaration->nature->seuil - $montant - $declaration->montant}} FCFA</h4>
+                                                                @else
+                                                                    <h4 class="text-success">Seuil: {{$declaration->nature->seuil - $montant - $declaration->montant}} FCFA</h4>
                                                                 @endif
 
                                                                 <div class="m-3">

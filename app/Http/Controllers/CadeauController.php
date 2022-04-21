@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DeclarationExport;
 use App\Mail\AdminNotification;
 use App\Mail\NotifyDeclarant;
 use App\Mail\NotifyResHie;
@@ -15,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class CadeauController extends Controller
@@ -66,7 +68,7 @@ class CadeauController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function store(Request $request)
     {
@@ -94,7 +96,42 @@ class CadeauController extends Controller
         $cadeau->direction = $outerGroup['direction'];
         $cadeau->sens = $outerGroup['sens'];
         $cadeau->contexte = $outerGroup['contexte'];
-        $cadeau->sup_hierarchique = $outerGroup['resHierarchique'];
+
+        if ($outerGroup['resHierarchique'] != 0){
+            try {
+                $client  = new Client();
+                $url = "http://5.189.156.127:8015/apirest.php/User/".$outerGroup['resHierarchique'];
+
+                $params = [
+                    "app_token" => "LoOZbYrfBt5dqi7eBZyPMjCLO3ye1i4zZEQGhSDe",
+                    "session_token" => Session::get('session_token'),
+                ];
+
+                $headers = [
+                    "Content-Type" => "application/json",
+
+                ];
+                $response = $client->request("GET", $url, [
+                    'query' => $params,
+                    'headers' => $headers,
+                    'verify' => false,
+                ]);
+
+                $userGlpi = json_decode($response->getBody());
+                $supHierarchique = $userGlpi->realname.' '.$userGlpi->firstname;
+
+            }catch (\Exception $exception){
+                $message = "Error Code 100-04";
+                return view('page-erreur', compact('message'));
+            }
+
+        }else {
+            $supHierarchique = "Aucun";
+        }
+
+
+
+        $cadeau->sup_hierarchique = $supHierarchique;
         $cadeau->date = $outerGroup['date'];
         $cadeau->description = $outerGroup['description'];
         $cadeau->statut = "EN-COURS";
@@ -120,9 +157,9 @@ class CadeauController extends Controller
 
 
 
-        if ($cadeau->sup_hierarchique != 0){
+        if ($outerGroup['resHierarchique'] != 0){
             $emailList = Session::get('emailList')[0];
-            $userEmail = $emailList->firstWhere('id', '=',$cadeau->sup_hierarchique);
+            $userEmail = $emailList->firstWhere('id', '=',$outerGroup['resHierarchique']);
 
             Mail::to($userEmail->email)->send(new NotifyResHie($cadeau));
 
@@ -156,35 +193,6 @@ class CadeauController extends Controller
     public function show($id)
     {
         $declaration = Cadeau::findOrFail($id);
-        $supHierarchique = "";
-        if ($declaration->sup_hierarchique != null && $declaration->sup_hierarchique != 0){
-            try {
-                $client  = new Client();
-                $url = "http://5.189.156.127:8015/apirest.php/User/".$declaration->sup_hierarchique;
-
-                $params = [
-                    "app_token" => "LoOZbYrfBt5dqi7eBZyPMjCLO3ye1i4zZEQGhSDe",
-                    "session_token" => Session::get('session_token'),
-                ];
-
-                $headers = [
-                    "Content-Type" => "application/json",
-
-                ];
-                $response = $client->request("GET", $url, [
-                    'query' => $params,
-                    'headers' => $headers,
-                    'verify' => false,
-                ]);
-
-                $userGlpi = json_decode($response->getBody());
-                $supHierarchique = $userGlpi->realname.' '.$userGlpi->firstname;
-
-            }catch (\Exception $exception){
-                $message = "Error Code 100-04";
-                return view('page-erreur', compact('message'));
-            }
-        }
 
         $adminApprouv = "";
         if ($declaration->statut != "EN-COURS" && $declaration->admin_modif_statut != null){
@@ -202,7 +210,28 @@ class CadeauController extends Controller
 
         }
 
-        return view('cadeau.show', compact('declaration', 'supHierarchique', 'adminApprouv', 'montant', 'decYear'));
+        return view('cadeau.show', compact('declaration', 'adminApprouv', 'montant', 'decYear'));
+
+
+    }
+
+    /**
+     * Export
+     */
+    public function export(Request $request){
+
+        $request->validate([
+            'debut' => "required",
+            'fin' => "required",
+        ]);
+        $declas = Cadeau::whereBetween('date', [$request->debut, $request->fin])->get();
+        if (count($declas) != 0){
+            return Excel::download(new DeclarationExport($request->debut, $request->fin), 'declaration-cadeaux-invitations.xlsx');
+
+        }else {
+            return redirect()->route('cadeau.index')->with('error', "Aucune declaration à exporter");
+
+        }
 
 
     }

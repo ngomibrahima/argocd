@@ -59,6 +59,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('declarations', [\App\Http\Controllers\CadeauController::class, 'store'])->name('cadeau.store');
     Route::get('declaration/{id}', [\App\Http\Controllers\CadeauController::class, 'show'])->name('cadeau.show');
     Route::get('mes-declarations', [\App\Http\Controllers\CadeauController::class, 'mesDeclarations'])->name('cadeau.mesDeclarations');
+    Route::post('declarations/exporter', [\App\Http\Controllers\CadeauController::class, 'export'])->name('cadeau.export');
 
 
 

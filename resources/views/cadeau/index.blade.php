@@ -57,6 +57,59 @@
 
                             <div class="card-body pt-5">
                                 <div class="p-2">
+                                    <div class="col-md-6">
+                                        <div class="m-3">
+                                            <button  class="btn  waves-effect waves-light" style="background-color: #9c182f; color: white" data-toggle="modal" data-target="#addNature" >Exporter</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="addNature" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <form action="{{route('cadeau.export')}}" method="post" autocomplete="off">
+                                                @csrf
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="staticBackdropLabel">Exportation</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="form-group col-md-6">
+                                                                <label for="date">Debut *</label>
+                                                                <input type="date" class="form-control @error('debut') is-invalid @enderror" id="debut" name="debut" value="{{old('debut')}}" >
+                                                                @error('debut')
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                                @enderror
+                                                            </div>
+
+                                                            <div class="form-group col-md-6">
+                                                                <label for="date">Fin *</label>
+                                                                <input type="date" class="form-control @error('fin') is-invalid @enderror" id="fin" name="fin" value="{{old('fin')}}" >
+                                                                @error('fin')
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+
+
+
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                                        <button type="submit" class="btn btn-primary">Exporter</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
 
                                     <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
