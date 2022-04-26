@@ -223,13 +223,86 @@
 
                                                         </div>
                                                     </div>
-                                                    <input data-repeater-create type="button" class="btn inner" style="background-color: #EABE8F; color: white" value="Ajouter Implication" />
+                                                    <input data-repeater-create type="button" class="btn inner" style="background-color: #EABE8F; color: white" value="Ajouter" />
                                                 </div>
 
 
 
                                                 <div class="mt-3">
-                                                    <button class="btn btn-lg waves-effect waves-light float-right" id="submit" style="background-color: #9c182f; color: white" type="submit">Enregistrer</button>
+                                                    <button class="btn btn-lg waves-effect waves-light float-right" style="background-color: #9c182f; color: white" data-toggle="modal" data-target="#exampleModalScrollable" type="button">Enregistrer</button>
+                                                </div>
+
+                                                <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title mt-0" id="exampleModalScrollableTitle">Déclaration d'invitations et de cadeaux </h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                                <p><strong>Cher(ère) collaborateur(rice), vous souhaitez déclarer la réception d’un cadeau ou d’une invitation ? Vous êtes bien au bon endroit. Merci d’avoir choisi la voie de la transparence.</strong></p>
+
+                                                                <p>Mais avant de lancer la procédure de déclaration, les informations ci-après vous seront utiles. </p>
+
+                                                                <p>A titre de rappel, concernant la Politique cadeaux et invitations, merci de noter que <strong>le principe est la déclaration et non l’interdiction.</strong></p>
+
+                                                                <p>Donc, quel que soit le cadeau ou l’invitation reçu, en nature ou en numéraire (même par voie de paiement électronique notamment par WAVE, WARI, ORANGE MONEY, FREE MONEY etc…), le collaborateur est soumis à une obligation de déclaration pour validation via cette plateforme DIC.</p>
+
+                                                                <p><strong>La réponse</strong> de la Direction Juridique et Conformité à la déclaration va intervenir dans les 24 heures après réception de la demande d’approbation.</p>
+
+                                                                <h3>1.	Seuil</h3>
+
+                                                                <p>Le seuil du montant annuel des libéralités est fixé par collaborateur comme suit :</p>
+
+                                                                <ul>
+                                                                    <li>Pour les cadeaux :     44.900 Fr CFA</li>
+                                                                    <li>Pour les invitations : 80. 000 Fr CFA  </li>
+                                                                </ul>
+
+                                                                <h3>2.	Nombre de cadeaux et Invitations </h3>
+
+                                                                <p>Il est possible de recevoir plusieurs cadeaux et invitations, à condition que le montant ne dépasse pas le seuil annuel arrêté. Par conséquent, un ou plusieurs cadeaux peuvent faire l’objet d’une seule déclaration.</p>
+
+                                                                <p>Tous les cadeaux et invitations reçus d’une relation d’affaires et dont la valeur dépasse le plafond doivent être signalés au Responsable hiérarchique et à la Direction Juridique et Conformité pour validation /approbation.</p>
+
+                                                                <p>Le collaborateur souhaitant exceptionnellement recevoir un cadeau ou une invitation au-delà du montant autorisé, doit d’abord obtenir l’autorisation de sa hiérarchie et l’avis favorable de la Direction Juridique et Conformité. </p>
+
+                                                                <h3>3.	Les Interdictions</h3>
+
+                                                                <p>Sont interdits, quel que soit le montant, les cadeaux et invitations :</p>
+                                                                <ul>
+                                                                    <li>Sous forme de dons en espèces, monnaies électroniques (Orange money, wave…) prêts, titres de placement ; </li>
+                                                                    <li>Sous forme de prestations gratuites ou inférieures au prix du marché ; </li>
+                                                                    <li>Demandés, offerts ou reçus à domicile, en contrepartie d'un avantage ; </li>
+                                                                    <li>Reçus ou offerts dans une période de procédure d’attribution de marché ;</li>
+                                                                    <li>A caractère illégal, de nature sexuelle, contraire à la dignité humaine ;</li>
+                                                                    <li>Son conformes aux lois et règlementations ;</li>
+                                                                    <li>En remerciement de services rendus ou d’avantages en nature. </li>
+                                                                </ul>
+
+                                                                <p><strong>Vous pouvez dès à présent procéder à la déclaration du cadeau/invitation reçu. </strong></p>
+
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" id="customCheck2" name="accept" onchange="document.getElementById('confirmer').disabled = !this.checked;">
+                                                                    <label class="custom-control-label" for="customCheck2">j'ai lu et j'accepte les termes et conditions</label>
+                                                                </div>
+
+                                                                <br>
+
+                                                                <h3><strong>LA DIRECTION JURIDIQUE ET CONFORMITE</strong></h3>
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                                                <button type="submit" class="btn " style="background-color: #9c182f; color: white" id="confirmer" disabled>Confirmer</button>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
                                                 </div>
 
                                             </div>
@@ -280,7 +353,7 @@
 
         <script>
             function disableButton(){
-                document.getElementById('submit').disabled = true;
+                document.getElementById('confirmer').disabled = true;
             }
         </script>
 

@@ -219,11 +219,11 @@ class CadeauController extends Controller
      * Export
      */
     public function export(Request $request){
-
         $request->validate([
-            'debut' => "required",
-            'fin' => "required",
+           'debut' => "required",
+           'fin' => "required",
         ]);
+
         $declas = Cadeau::whereBetween('date', [$request->debut, $request->fin])->get();
         if (count($declas) != 0){
             return Excel::download(new DeclarationExport($request->debut, $request->fin), 'declaration-cadeaux-invitations.xlsx');
