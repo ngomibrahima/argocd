@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use Jumbojett\OpenIDConnectClient;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class AuthController extends Controller
@@ -294,13 +295,84 @@ class AuthController extends Controller
     }
 
 
+    /**
+     * Login SSO Form
+     */
+    public function loginSsoForm() {
+        return view('auth.login-sso');
+    }
+
+    /**
+     * Login SSO
+     */
+    public function loginSso(){
+        $url = "https://seter.trustelem.com/app/630963";
+        $clientID = "trustelem.oidc.hfqtayrt";
+        $clientSecret = "ig0Sx9l4kKyi5sLobfgOWsTqx53K0oud";
+        $oidc = new OpenIDConnectClient($url, $clientID, $clientSecret);
+
+        $oidc->authenticate();
+
+        $email = $oidc->requestUserInfo('email');
+
+        $users = $this->getAllEmail();
+
+        $userTC = $users[0]->firstWhere('email', '=',$email);
+        $userDB = User::where(['email' => $userTC->email])->first();
+
+        if ($userDB === null){
+            try {
+                $client  = new Client();
+                $url = "http://5.189.156.127:8015/apirest.php/User/".$userTC->id;
+                $params = [
+                    "app_token" => "LoOZbYrfBt5dqi7eBZyPMjCLO3ye1i4zZEQGhSDe",
+                    "session_token" => Session::get('session_token'),
+                ];
+
+                $headers = [
+                    "Content-Type" => "application/json",
+
+                ];
+                $response = $client->request("GET", $url, [
+                    'query' => $params,
+                    'headers' => $headers,
+                    'verify' => false,
+                ]);
+
+                $userGlpi = json_decode($response->getBody());
+                $user = new User();
+                $user->user_glpi_id = $userTC->id;
+                $user->email = $userTC->email;
+                $user->name = $userGlpi->realname.' '.$userGlpi->firstname;
+                $user->password = Hash::make("DooDoug12345678");
+                $user->save();
+
+            }catch (\Exception $exception){
+                $message = "Error Code 100-04";
+                return view('page-erreur', compact('message'));
+            }
+
+
+
+        }else {
+            $user = $userDB;
+        }
+
+        Auth::login($user);
+        if (Auth::user()->type == "ADMIN"){
+            return redirect()->route('cadeau.index');
+        }else {
+            return redirect()->route('auth.starter');
+        }
+
+    }
 
     //Logout
     public function logout(){
 
         Session::forget('session_token');
         Auth::logout();
-        return redirect()->route('auth.login-form');
+        return redirect()->route('auth.login-sso-form');
 
     }
 }

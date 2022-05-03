@@ -17,7 +17,7 @@ Route::get('/', function () {
     if (\Illuminate\Support\Facades\Auth::check()){
         return redirect()->route('auth.starter');
     }else {
-        return redirect()->route('auth.login-form');
+        return redirect()->route('auth.login-sso-form');
     }
 });
 
@@ -70,10 +70,14 @@ Route::group(['middleware' => 'auth'], function () {
 /**
  * Auth
  */
-Route::get('connexion', [\App\Http\Controllers\AuthController::class, 'loginForm'])->name('auth.login-form');
-Route::post('connexion', [\App\Http\Controllers\AuthController::class, 'login'])->name('auth.login');
-Route::get('connexion/email-verification', [\App\Http\Controllers\AuthController::class, 'verifyTokenForm'])->name('auth.verify-token-form');
-Route::post('connexion/email-verification', [\App\Http\Controllers\AuthController::class, 'verifyToken'])->name('auth.verify-token');
+//Route::get('connexion', [\App\Http\Controllers\AuthController::class, 'loginForm'])->name('auth.login-form');
+//Route::post('connexion', [\App\Http\Controllers\AuthController::class, 'login'])->name('auth.login');
+//Route::get('connexion/email-verification', [\App\Http\Controllers\AuthController::class, 'verifyTokenForm'])->name('auth.verify-token-form');
+//Route::post('connexion/email-verification', [\App\Http\Controllers\AuthController::class, 'verifyToken'])->name('auth.verify-token');
+
+
+Route::get('login', [\App\Http\Controllers\AuthController::class, 'loginSsoForm'])->name('auth.login-sso-form');
+Route::get('login/sso', [\App\Http\Controllers\AuthController::class, 'loginSso'])->name('auth.login-sso');
 
 
 
